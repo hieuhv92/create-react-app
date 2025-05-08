@@ -36,7 +36,7 @@ class AddUser extends React.Component {
 
                     <label>Your Age:</label>
                     <input value={this.state.age} type="text" onChange={(event) => { this.handleOnchangeAge(event) }} />
-                    <button>submit</button>
+                    <button onClick={(event) => { this.handleOnSubmit(event) }}>submit</button>
                 </form>
             </div>
         )

@@ -16,6 +16,16 @@ class MyComponent extends React.Component {
             listUsers: [userObject, ...this.state.listUsers]
         })
     }
+    handleDeleteUser = (userId) => {
+        let restOfListUsers = this.state.listUsers;
+        restOfListUsers = restOfListUsers.filter(item => {
+            return item.id !== userId;
+        })
+        this.setState({
+            listUsers: restOfListUsers
+        })
+    }
+
     render() {
         return (
             //Fragment
@@ -23,7 +33,7 @@ class MyComponent extends React.Component {
                 <AddUser handleAddNewUser={this.handleAddNewUser} />
                 <br />
                 <br />
-                <DisplayInfo listUsers={this.state.listUsers} />
+                <DisplayInfo listUsers={this.state.listUsers} handleDeleteUser={this.handleDeleteUser} />
             </>
         );
     }
