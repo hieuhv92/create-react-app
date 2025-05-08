@@ -16,10 +16,26 @@ class MyComponent extends React.Component {
         // console.log(event.target)
     }
 
+    handleOnchange = (event) => {
+        // alert(event.target.value)
+        this.setState({
+            name: event.target.value
+        })
+    }
+
+    handleOnSubmit = (event) => {
+        event.preventDefault()
+        alert(this.state.name)
+    }
+
     render() {
         return (
             <div>My first name is {this.state.name} and I'm from {this.state.address}
-                <button onClick={(event) => { this.handleClick(event) }}>Click Me</button>
+                {/* <button onClick={(event) => { this.handleClick(event) }}>Click Me</button> */}
+                <form onSubmit={(event) => { this.handleOnSubmit(event) }}>
+                    <input type="text" onChange={(event) => { this.handleOnchange(event) }} />
+                    <button>submit</button>
+                </form>
             </div>
         );
     }
