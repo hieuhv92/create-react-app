@@ -16,7 +16,7 @@ class DisplayInfo extends React.Component {
         const { listUsers } = this.props;
         // console.table(listUsers)
         return (
-            <div>
+            <div className="display-info-container">
                 <div>
                     <span onClick={(event) => { this.handleShowHideListUser(event) }}>{this.state.isShowListUser ? 'Hide' : 'Show'} list user</span>
                 </div>

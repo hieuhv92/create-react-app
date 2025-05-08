@@ -1,6 +1,7 @@
 import React from "react";
 import AddUser from "./AddUser";
 import DisplayInfo from "./DisplayInfo";
+import './DisplayInfo.scss';
 
 class MyComponent extends React.Component {
     state = {
