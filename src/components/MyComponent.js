@@ -18,12 +18,13 @@ class MyComponent extends React.Component {
     }
     render() {
         return (
-            <div>
+            //Fragment
+            <>
                 <AddUser handleAddNewUser={this.handleAddNewUser} />
                 <br />
                 <br />
                 <DisplayInfo listUsers={this.state.listUsers} />
-            </div>
+            </>
         );
     }
 }
