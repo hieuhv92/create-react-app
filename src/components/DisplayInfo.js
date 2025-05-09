@@ -1,9 +1,26 @@
 import React from "react";
 import logo from '../logo.svg'
 class DisplayInfo extends React.Component {
-    state = {
-        isShowListUser: true
+    constructor(props) {
+        super(props);
+        this.state = {
+            isShowListUser: true
+        }
     }
+
+    componentDidMount() {
+        //Running: contructor => render => componentDidMount
+        setTimeout(() => {
+            document.title = 'Learning ReactJS'
+        }, 3000)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.listUsers !== prevProps.listUsers) {
+
+        }
+    }
+
     handleShowHideListUser = (event) => {
         this.setState({
             isShowListUser: !this.state.isShowListUser
