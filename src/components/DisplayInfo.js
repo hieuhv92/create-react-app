@@ -1,5 +1,5 @@
-import React from "react";
-import logo from '../logo.svg'
+import React, { useState } from "react";
+import logo from '../logo.svg';
 
 //Class component => stateful
 // class DisplayInfo extends React.Component {
@@ -71,13 +71,17 @@ import logo from '../logo.svg'
 //Funcition Component => stateless
 const DisplayInfo = (props) => {
     const { listUsers } = props;
+    const [isShowHideListUser, setShowHideListUser] = useState(true); //destructuring assignment
+    const handleShowHideListUser = () => {
+        setShowHideListUser(!isShowHideListUser)
+    }
     return (
         <div className="display-info-container">
             {/* <img src={logo} /> */}
-            {/* <div>
-                    <span onClick={(event) => { this.handleShowHideListUser(event) }}>{this.state.isShowListUser ? 'Hide' : 'Show'} list user</span>
-                </div> */}
-            {true &&
+            <div>
+                <span onClick={() => { handleShowHideListUser() }}>{isShowHideListUser === true ? 'Hide' : 'Show'} list user</span>
+            </div>
+            {isShowHideListUser &&
                 <>
                     {
                         listUsers.map((user) => {
