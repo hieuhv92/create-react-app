@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from '../logo.svg';
 
 //Class component => stateful
@@ -75,6 +75,16 @@ const DisplayInfo = (props) => {
     const handleShowHideListUser = () => {
         setShowHideListUser(!isShowHideListUser)
     }
+    useEffect(() => {
+        setTimeout(() => {
+            document.title = 'Learning ReactJS'
+        }, 3000)
+    }, []) //run one time
+    useEffect(() => { //render => useEffect
+        if (listUsers.length === 0) {
+            alert('You deleted all the users')
+        }
+    }, [listUsers])
     return (
         <div className="display-info-container">
             {/* <img src={logo} /> */}
