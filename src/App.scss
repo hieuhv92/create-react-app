@@ -10,10 +10,35 @@ body {
 
 .app-container {
   .header-container {
-    .navbar-nav {
+    .btn-login {
+      border-radius: 5px;
+      margin-right: 15px;
+      padding: 0 15px;
+      border: 1px solid black;
+      height: 40px;
+    }
+
+    .btn-signup {
+      border-radius: 5px;
+      margin-right: 15px;
+      padding: 0 15px;
+      background-color: #464646;
+      color: white;
+      height: 40px;
+
+      &:hover {
+        background-color: black;
+      }
+    }
+
+    .navbar {
+      padding-top: 20px;
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0) !important;
+
       .nav-link {
         &.active {
-          color: red;
+          color: #00bff0;
         }
       }
     }
