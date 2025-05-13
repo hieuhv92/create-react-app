@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import './ManageUser.scss';
 import { FcPlus } from "react-icons/fc";
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ModalCreateModal = (props) => {
     const { show, setShow } = props;
@@ -34,14 +35,27 @@ const ModalCreateModal = (props) => {
         }
     }
 
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
     const handleSubmitCreatUser = async () => {
-        // let data = {
-        //     email: email,
-        //     password: password,
-        //     username: username,
-        //     role: role,
-        //     userImage: image
-        // }
+        const isValidEmail = validateEmail(email);
+
+        if (!isValidEmail) {
+            toast.error('Invalid email!');
+            return;
+        }
+
+        if (!password) {
+            toast.error('Invalid password!');
+            return;
+        }
+
         const data = new FormData();
         data.append('email', email);
         data.append('password', password);
@@ -50,8 +64,14 @@ const ModalCreateModal = (props) => {
         data.append('userImage', image);
 
         let reponse = await axios.post('http://localhost:8081/api/v1/participant', data);
-        console.log('check reponse', reponse);
-
+        console.log('check reponse', reponse.data);
+        if (reponse && reponse.data && reponse.data.EC === 0) {
+            toast.success(reponse.data.EM);
+            handleClose();
+        }
+        if (reponse.data && reponse.data.EC !== 0) {
+            toast.error(reponse.data.EM);
+        }
     }
 
     return (
