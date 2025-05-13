@@ -1,6 +1,7 @@
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
 import ProSideBar from "./SideBar";
+import { Outlet } from 'react-router-dom';
 
 const Admin = (props) => {
     const [collapse, setCollapse] = useState(false)
@@ -10,7 +11,12 @@ const Admin = (props) => {
                 <ProSideBar collapse />
             </div>
             <div className="admin-content">
-                <FaBars onClick={() => setCollapse(!collapse)} />
+                <div className="admin-header">
+                    <FaBars onClick={() => setCollapse(!collapse)} />
+                </div>
+                <div className="admin-main">
+                    <Outlet />
+                </div>
             </div>
         </div>
     )
