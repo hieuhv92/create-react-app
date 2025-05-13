@@ -1,15 +1,15 @@
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
-import ProSideBar from "./SideBar";
+import SideBar from "./SideBar";
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 const Admin = (props) => {
-    const [collapse, setCollapse] = useState(false)
+    const [collapse, setCollapse] = useState(false);
     return (
         <div className="admin-container">
             <div className="admin-sidebar">
-                <ProSideBar collapse />
+                <SideBar collapse={collapse} />
             </div>
             <div className="admin-content">
                 <div className="admin-header">
