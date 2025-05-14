@@ -1,40 +1,13 @@
-import { useEffect, useState } from "react";
 
-import { getAllUsers } from "../../../services/ApiServices"
-
-const TableUser = () => {
-    const [listUsers, setListUsers] = useState([
-        {
-            "id": 11,
-            "username": "33333",
-            "email": "aa@gmail.com",
-            "role": "USER"
-        }, {
-            "id": 10,
-            "username": "1111",
-            "email": "adad@yopmail.com",
-            "role": "USER",
-        }
-    ]);
-
-    //componentDidmount - run after render
-    useEffect(() => {
-        fetchListUsers();
-    }, [])
-
-    const fetchListUsers = async () => {
-        let res = await getAllUsers();
-        if (res && res.EC === 0) {
-            setListUsers(res.DT);
-        }
-    }
-
+const TableUser = (props) => {
+    const { listUsers } = props;
+    // const listUsers = props.listUsers;
     return (
         <>
             <table className="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">NO</th>
+                        <th scope="col">ID</th>
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
                         <th scope="col">Role</th>
@@ -46,7 +19,7 @@ const TableUser = () => {
                         listUsers.map((item, index) => {
                             return (
                                 <tr key={`table-user-${index}`}>
-                                    <th scope="row">{index + 1}</th>
+                                    <th scope="row">{item.id}</th>
                                     <td>{item.username}</td>
                                     <td>{item.email}</td>
                                     <td>{item.role}</td>
