@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import './ManageUser.scss';
 import { FcPlus } from "react-icons/fc";
 import { toast } from 'react-toastify';
-import { postCreateNewUser } from '../../../services/ApiServices';
+import { putUpdateUser } from '../../../services/ApiServices';
 import _ from "lodash";
 
 const ModalUpdateModal = (props) => {
@@ -19,6 +19,7 @@ const ModalUpdateModal = (props) => {
         setRole('USER');
         setImage('');
         setPreviewImage('');
+        props.resetUpdateData();
     };
     const handleShow = () => setShow(true);
 
@@ -33,7 +34,9 @@ const ModalUpdateModal = (props) => {
             setEmail(dataUpdate.email);
             setUsername(dataUpdate.username);
             setRole(dataUpdate.role);
-            setPreviewImage(dataUpdate.image ? `data:image/jpeg;base64,${dataUpdate.image}` : '');
+            if (dataUpdate.image) {
+                setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`);
+            }
         }
     }, [dataUpdate])
 
@@ -45,30 +48,9 @@ const ModalUpdateModal = (props) => {
         }
     }
 
-    const validateEmail = (email) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
 
-    const handleSubmitCreatUser = async () => {
-        const isValidEmail = validateEmail(email);
-
-        if (!isValidEmail) {
-            toast.error('Invalid email!');
-            return;
-        }
-
-        if (!password) {
-            toast.error('Invalid password!');
-            return;
-        }
-
-
-
-        let reponseData = await postCreateNewUser(email, password, username, role, image);
+    const handleSubmitUpdateUser = async () => {
+        let reponseData = await putUpdateUser(dataUpdate.id, username, role, image);
         if (reponseData && reponseData.EC === 0) {
             toast.success(reponseData.EM);
             handleClose();
@@ -147,7 +129,7 @@ const ModalUpdateModal = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleSubmitCreatUser()}>
+                    <Button variant="primary" onClick={() => handleSubmitUpdateUser()}>
                         Save
                     </Button>
                 </Modal.Footer>
