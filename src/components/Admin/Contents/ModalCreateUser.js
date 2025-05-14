@@ -57,13 +57,13 @@ const ModalCreateModal = (props) => {
             return;
         }
 
-
-
         let reponseData = await postCreateNewUser(email, password, username, role, image);
         if (reponseData && reponseData.EC === 0) {
             toast.success(reponseData.EM);
             handleClose();
-            await props.fetchListUsers();
+            // await props.fetchListUsers();
+            props.setCurrentPage(1);
+            await props.fetchListUsersWithPaginate(1);
         }
         if (reponseData && reponseData.EC !== 0) {
             toast.error(reponseData.EM);
