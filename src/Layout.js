@@ -7,6 +7,7 @@ import DashBoard from './components/Admin/Contents/DashBoard';
 import Login from './components/Auth/Login';
 import App from './App';
 import { ToastContainer } from 'react-toastify';
+import Register from './components/Auth/Register';
 
 const Layout = () => {
     return (
@@ -17,12 +18,13 @@ const Layout = () => {
                     <Route path="users" element={<User />} />
                 </Route>
 
-                <Route path="/admins" element={<Admin />} >
+                <Route path="/admin" element={<Admin />} >
                     <Route index element={<DashBoard />} />
                     <Route path="manage-users" element={<ManageUser />} />
                 </Route>
 
                 <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Register />} />
 
             </Routes>
             <ToastContainer

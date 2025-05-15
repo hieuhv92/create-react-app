@@ -25,7 +25,7 @@ const Login = () => {
         <div className="login-container">
             <div className='header'>
                 <span>Don't you have an account yet?</span>
-                <button>Sign up</button>
+                <button onClick={() => navigate('/signup')}>Sign up</button>
             </div>
             <div className='title'>
                 Hieu Ho IT

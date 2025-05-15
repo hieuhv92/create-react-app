@@ -5,6 +5,7 @@ import './ManageUser.scss';
 import { FcPlus } from "react-icons/fc";
 import { toast } from 'react-toastify';
 import { postCreateNewUser } from '../../../services/ApiServices';
+import { validateEmail } from '../../../utils/Helpers';
 
 const ModalCreateModal = (props) => {
     const { show, setShow } = props;
@@ -35,14 +36,6 @@ const ModalCreateModal = (props) => {
             setImage(URL.createObjectURL(event.target.files[0]));
         }
     }
-
-    const validateEmail = (email) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
 
     const handleSubmitCreatUser = async () => {
         const isValidEmail = validateEmail(email);
