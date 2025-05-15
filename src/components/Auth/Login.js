@@ -5,6 +5,7 @@ import { postLogin } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { doLogin } from '../../redux/action/userAction';
+import { CgSpinnerTwo } from "react-icons/cg";
 
 const Login = () => {
     const [email, setEmail] = useState();
@@ -58,7 +59,10 @@ const Login = () => {
                 </div>
                 <span className='forgot-password'>Forgot Password?</span>
                 <div>
-                    <button onClick={() => handleLogin()} className='btn-submit'>Log in</button>
+                    <button onClick={() => handleLogin()} className='btn-submit'>
+                        <CgSpinnerTwo className='loaderIcon' />
+                        <span>Log in</span>
+                    </button>
                 </div>
                 <div className='text-center'>
                     <span className='back-home' onClick={() => navigate('/')}> &#60;&#60; Go to Homepage</span>
