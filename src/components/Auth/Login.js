@@ -3,17 +3,21 @@ import './Login.scss';
 import { useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { doLogin } from '../../redux/action/userAction';
 
 const Login = () => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const navigate = useNavigate();
+    var dispatch = useDispatch();
 
     const handleLogin = async () => {
         const data = await postLogin(email, password);
 
         if (data && +data.EC === 0) {
             toast.success(data.EM);
+            dispatch(doLogin(data))
             navigate('/');
         }
         if (data && +data.EC !== 0) {
