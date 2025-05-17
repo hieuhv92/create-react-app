@@ -32,6 +32,7 @@ const DetailQuiz = (props) => {
                             questionDescrition = item.description;
                             image = item.image;
                         }
+                        item.answers.isSelected = false;
                         answers.push(item.answers);
                     })
 
@@ -55,6 +56,25 @@ const DetailQuiz = (props) => {
         }
     }
 
+    const handleCheckBox = (aId, qId) => {
+        let dataQuizClone = _.cloneDeep(dataQuiz); //React hook doesn't merge state, only React class does
+        let question = dataQuizClone.find(item => +item.questionId === +qId);
+
+        if (question && question.answers) {
+            question.answers = question.answers.map(aItem => {
+                if (+aItem.id === +aId) {
+                    aItem.isSelected = !aItem.isSelected;
+                }
+                return aItem;
+            });
+        }
+        let index = dataQuizClone.findIndex(item => +item.questionId === +qId);
+        if (index > -1) {
+            dataQuizClone[index] = question;
+            setDataQuiz(dataQuizClone);
+        }
+    }
+
     return (
         <div className="detail-quiz-container">
             <div className="left-content">
@@ -66,7 +86,11 @@ const DetailQuiz = (props) => {
                     <img />
                 </div>
                 <div className="q-content">
-                    <Question index={index} data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []} />
+                    <Question
+                        index={index}
+                        handleCheckBox={handleCheckBox}
+                        data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
+                    />
                 </div>
                 <div className="q-footer">
                     <button className="btn btn-secondary" onClick={() => handlePrev()}>Prev</button>
