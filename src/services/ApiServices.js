@@ -59,6 +59,16 @@ const postSubmitQuiz = (data) => {
     return axios.post('api/v1/quiz-submit', { ...data })
 }
 
+const postCreatNewQuiz = (description, name, difficulty, image) => {
+    const data = new FormData();
+    const imgFile = new File([image], "image.jpg", { type: "image/jpeg" });
+    data.append('description', description);
+    data.append('name', name);
+    data.append('difficulty', difficulty);
+    data.append('quizImage', imgFile);
+    return axios.post('api/v1/quiz', data);
+}
+
 export {
     postCreateNewUser,
     getAllUsers,
@@ -69,5 +79,6 @@ export {
     postRegister,
     postQuizByUser,
     getQuizData,
-    postSubmitQuiz
+    postSubmitQuiz,
+    postCreatNewQuiz
 }
