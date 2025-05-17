@@ -29,7 +29,7 @@ const Question = (props) => {
                                     // onChange={(event) => handleCheckBox(event, `a${a.id}-q${data.questionId}`)}
                                     onChange={() => props.handleCheckBox(a.id, data.questionId)}
                                 />
-                                <label className="form-check-label" for="flexCheckDefault">
+                                <label className="form-check-label" htmlFor="flexCheckDefault">
                                     {a.description}
                                 </label>
                             </div>
