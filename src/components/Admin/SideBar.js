@@ -34,7 +34,7 @@ const SideBar = (props) => {
                         <MenuItem icon={<MdDashboard />} component={<Link to="/admin" />}> Dashboard </MenuItem>
                         <SubMenu label="Features" icon={<PiListDashesFill />}>
                             <MenuItem component={<Link to="/admin/manage-users" />}> Manage Users</MenuItem>
-                            <MenuItem> Manage Quizs </MenuItem>
+                            <MenuItem component={<Link to="/admin/manage-quizzes" />}> Manage Quizs </MenuItem>
                             <MenuItem> Manage Questions </MenuItem>
                         </SubMenu>
                     </Menu>
