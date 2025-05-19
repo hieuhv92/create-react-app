@@ -43,7 +43,6 @@ const ManageQuiz = (props) => {
         } else {
             toast.error(response.EM);
         }
-        console.log(response);
     }
 
     return (
