@@ -7,6 +7,8 @@ import { PiMinusCircleFill } from "react-icons/pi";
 import { TbHexagonPlusFilled } from "react-icons/tb";
 import { TbHexagonMinusFilled } from "react-icons/tb";
 import { LuImageUp } from "react-icons/lu";
+import { v4 as uuidv4 } from 'uuid';
+import _ from 'lodash';
 
 const Questions = () => {
     const options = [
@@ -15,12 +17,75 @@ const Questions = () => {
         { value: 'HOT', label: 'HOT' },
     ];
     const [selectedQuiz, setSelectedQuiz] = useState({});
+
+    const [questions, setQuestions] = useState([
+        {
+            id: uuidv4(),
+            description: 'question 1',
+            image: '',
+            imageFile: '',
+            answers: [
+                {
+                    id: uuidv4(),
+                    desciption: 'question 1 - answer 1',
+                    isCorrect: false
+                }
+            ]
+        }
+    ])
+
+    const handleAddOrRemoveQuestion = (type, id) => {
+        if (type === 'ADD') {
+            const newQuestion = {
+                id: uuidv4(),
+                description: '',
+                image: '',
+                imageFile: '',
+                answers: [
+                    {
+                        id: uuidv4(),
+                        desciption: '',
+                        isCorrect: false
+                    }
+                ]
+            }
+            setQuestions([...questions, newQuestion]);
+        }
+
+        if (type === 'REMOVE') {
+            let questionClone = _.cloneDeep(questions);
+            questionClone = questionClone.filter(item => item.id !== id);
+            setQuestions(questionClone);
+        }
+    }
+
+    const handleAddOrRemoveAnswer = (type, qId, aId) => {
+        let questionsClone = _.cloneDeep(questions);
+        let index = questionsClone.findIndex(item => item.id === qId);
+        if (type === 'ADD') {
+            const newAnswer = {
+                id: uuidv4(),
+                desciption: '',
+                isCorrect: false
+            }
+            questionsClone[index].answers.push(newAnswer);
+            setQuestions(questionsClone);
+        }
+
+        if (type === 'REMOVE') {
+            questionsClone[index].answers = questionsClone[index].answers.filter(item => item.id !== aId);
+            setQuestions(questionsClone);
+        }
+        console.log(questions);
+    }
+
     return (
         <div className="questions-container">
             <div className="title">Manage Questions</div>
+            <hr />
             <div className="add-new-question">
                 <div className='col-6 form-group'>
-                    <label>Select Quiz</label>
+                    <label className='mb-2'>Select Quiz</label>
                     <Select
                         defaultValue={selectedQuiz}
                         onChange={selectedQuiz}
@@ -28,34 +93,59 @@ const Questions = () => {
                         placeholder="Quiz Type"
                     />
                 </div>
-                <div className='mt-3'>Add questions:</div>
-                <div>
-                    <div className="questions-content-section">
-                        <div className="form-floating description">
-                            <input type="text" className="form-control" />
-                            <label>Descrition</label>
-                        </div>
-                        <div className="group-upload">
-                            <label className='label-upload'><LuImageUp /></label>
-                            <input type='file' hidden />
-                            <span>No file is uploaded!!</span>
-                        </div>
-                        <div className="btn-add-question-group">
-                            <span className="icon-add"><PiPlusCircleFill /></span>
-                            <span className="icon-remove"><PiMinusCircleFill /></span>
-                        </div>
-                    </div>
-                    <div className="answers-content-section">
-                        <input className="form-check-input is-correct" type="checkbox" />
-                        <div className="form-floating answer-name">
-                            <input type="text" className="form-control" />
-                            <label>Answer1</label>
-                        </div>
-                        <div className="btn-add-answer-group">
-                            <span className="icon-add"><TbHexagonPlusFilled /></span>
-                            <span className="icon-remove"><TbHexagonMinusFilled /></span>
-                        </div>
-                    </div>
+                <div className='mt-3 mb-2'>Add questions:</div>
+                <div className='q-main mb-4'>
+                    {questions && questions.length > 0 &&
+                        questions.map((question, index) => {
+                            return (
+                                <>
+                                    <div key={`question-${question.id}`} className="questions-content-section">
+                                        <div className="form-floating description">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={question.description}
+                                            />
+                                            <label>Question {index + 1} 's descrition</label>
+                                        </div>
+                                        <div className="group-upload">
+                                            <label className='label-upload'><LuImageUp /></label>
+                                            <input type='file' hidden />
+                                            <span>No file is uploaded!!</span>
+                                        </div>
+                                        <div className="btn-add-question-group">
+                                            <span className="icon-add" onClick={() => handleAddOrRemoveQuestion('ADD', '')}><PiPlusCircleFill /></span>
+                                            {questions.length > 1 &&
+                                                <span className="icon-remove" onClick={() => handleAddOrRemoveQuestion('REMOVE', question.id)}><PiMinusCircleFill /></span>
+                                            }
+                                        </div>
+                                    </div>
+                                    {question.answers && question.answers.length > 0 &&
+                                        question.answers.map((answer, index) => {
+                                            return (
+                                                <div key={`answer-${answer.id}`} className="answers-content-section">
+                                                    <input className="form-check-input is-correct" type="checkbox" />
+                                                    <div className="form-floating answer-name">
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            value={answer.desciption}
+                                                        />
+                                                        <label>Answer {index + 1}</label>
+                                                    </div>
+                                                    <div className="btn-add-answer-group">
+                                                        <span className="icon-add" onClick={() => handleAddOrRemoveAnswer('ADD', question.id, '')}><TbHexagonPlusFilled /></span>
+                                                        {question.answers.length > 1 &&
+                                                            <span className="icon-remove" onClick={() => handleAddOrRemoveAnswer('REMOVE', question.id, answer.id)}><TbHexagonMinusFilled /></span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </>
+                            )
+                        })}
                 </div>
             </div>
         </div>
