@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Select from 'react-select';
+import Lightbox from "react-awesome-lightbox";
 import { v4 as uuidv4 } from 'uuid';
 import { PiPlusCircleFill } from "react-icons/pi";
 import { PiMinusCircleFill } from "react-icons/pi";
@@ -21,8 +22,8 @@ const Questions = () => {
         {
             id: uuidv4(),
             description: '',
-            image: '',
             imageFile: '',
+            imageName: '',
             answers: [
                 {
                     id: uuidv4(),
@@ -33,13 +34,19 @@ const Questions = () => {
         }
     ])
 
+    const [isPreviewImage, setIsPreviewImage] = useState(false);
+    const [dataPreviewImage, setDataPreviewImage] = useState({
+        title: '',
+        url: ''
+    });
+
     const handleAddOrRemoveQuestion = (type, id) => {
         if (type === 'ADD') {
             const newQuestion = {
                 id: uuidv4(),
                 description: '',
-                image: '',
                 imageFile: '',
+                imageName: '',
                 answers: [
                     {
                         id: uuidv4(),
@@ -91,8 +98,8 @@ const Questions = () => {
         let questionsClone = _.cloneDeep(questions);
         let index = questionsClone.findIndex(item => item.id === qId);
         if (index > -1 && event.target && event.target.files && event.target.files[0]) {
-            questionsClone[index].image = event.target.files[0];
-            questionsClone[index].imageFile = event.target.files[0].name;
+            questionsClone[index].imageFile = event.target.files[0];
+            questionsClone[index].imageName = event.target.files[0].name;
             setQuestions(questionsClone);
         }
     }
@@ -128,6 +135,14 @@ const Questions = () => {
 
     const handleSubmitQuestions = () => {
         console.log('questions: ', questions)
+    }
+
+    const handlePreviewImage = (questionData) => {
+        setDataPreviewImage({
+            url: URL.createObjectURL(questionData.imageFile),
+            title: questionData.imageName
+        });
+        setIsPreviewImage(true)
     }
 
     return (
@@ -168,7 +183,7 @@ const Questions = () => {
                                                 hidden
                                                 onChange={(event) => handleOnChangeFileQuestion(question.id, event)}
                                             />
-                                            <span>{question.imageFile ? question.imageFile : 'No file is uploaded!!'}</span>
+                                            <span>{question.imageFile ? <span className="preview-image" onClick={() => handlePreviewImage(question)}>{question.imageName}</span> : 'No file is uploaded!!'}</span>
                                         </div>
                                         <div className="btn-add-question-group">
                                             <span className="icon-add" onClick={() => handleAddOrRemoveQuestion('ADD', '')}><PiPlusCircleFill /></span>
@@ -207,7 +222,8 @@ const Questions = () => {
                                             )
                                         })
                                     }
-                                    {question.answers && question.answers.length > 0 &&
+                                    {
+                                        question.answers && question.answers.length > 0 &&
                                         <div className='mt-3'>
                                             <button onClick={() => handleSubmitQuestions()} className='btn btn-warning'>Save Questions</button>
                                         </div>
@@ -217,7 +233,14 @@ const Questions = () => {
                         })}
                 </div>
             </div>
-        </div >
+            {isPreviewImage === true &&
+                <Lightbox
+                    image={dataPreviewImage.url}
+                    title={dataPreviewImage.title}
+                    onClose={() => setIsPreviewImage(false)}>
+                </Lightbox>
+            }
+        </div>
     )
 }
 
