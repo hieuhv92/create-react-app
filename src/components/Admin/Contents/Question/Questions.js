@@ -139,7 +139,6 @@ const Questions = () => {
                 })
             // let answerIndex = questionsClone[index].answers.findIndex(item => item.id === aId);
             // if (type === 'CHECKBOX') {
-            //     console.log('checked', value);
             //     questionsClone[index].answers[answerIndex].isCorrect = value;
             // }
             // if (type === 'INPUT') {
@@ -188,8 +187,6 @@ const Questions = () => {
         });
         setIsPreviewImage(true)
     }
-
-    // console.log('selected quiz id,' + selectedQuiz.value)
 
     return (
         <div className="questions-container">

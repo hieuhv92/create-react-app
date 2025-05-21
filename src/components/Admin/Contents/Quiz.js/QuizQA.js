@@ -3,9 +3,8 @@ import Select from 'react-select';
 import Lightbox from "react-awesome-lightbox";
 import {
     getAllQuizForAdmin,
-    postCreateNewQuestionForQuiz,
-    postCreateNewAnswerForQuestion,
-    getQuizWithQA
+    getQuizWithQA,
+    postUpsertQA
 } from '../../../../services/ApiServices';
 import { v4 as uuidv4 } from 'uuid';
 import { PiPlusCircleFill } from "react-icons/pi";
@@ -33,15 +32,15 @@ const QuizQA = (props) => {
             ]
         }
     ]
-    const [questions, setQuestions] = useState(initQuestion);
 
+    const [questions, setQuestions] = useState(initQuestion);
     const [isPreviewImage, setIsPreviewImage] = useState(false);
     const [dataPreviewImage, setDataPreviewImage] = useState({
-        title: '',
-        url: ''
+        title: " ",
+        url: " "
     });
 
-    const [selectedQuiz, setSelectedQuiz] = useState('');
+    const [selectedQuiz, setSelectedQuiz] = useState(" ");
     const [listQuiz, setListQuiz] = useState([]);
 
     useEffect(() => {
@@ -177,14 +176,6 @@ const QuizQA = (props) => {
                     }
                     return answer;
                 })
-            // let answerIndex = questionsClone[index].answers.findIndex(item => item.id === aId);
-            // if (type === 'CHECKBOX') {
-            //     console.log('checked', value);
-            //     questionsClone[index].answers[answerIndex].isCorrect = value;
-            // }
-            // if (type === 'INPUT') {
-            //     questionsClone[index].answers[answerIndex].description = value;
-            // }
             setQuestions(questionsClone);
         }
     }
@@ -194,42 +185,41 @@ const QuizQA = (props) => {
             toast.error('Please choose a Quiz!!');
             return;
         }
+        let questionClone = _.cloneDeep(questions);
 
-        //Validate Question
-
-
-        // await Promise.all(questions.map(async (question) => { => Chay Song Song
-        //     //Call to create new question - postCreateNewQuestionForQuiz
-        //     const qRes = await postCreateNewQuestionForQuiz(+selectedQuiz.value, question.description, question.imageFile);
-
-        //     //Call to create new answer - postCreateNewAnswerForQuestion
-        //     await Promise.all(question.answers.map(async (answer) => {
-        //         await postCreateNewAnswerForQuestion(qRes.DT.id, answer.description, answer.isCorrect);
-        //     }))
-        // }))
-
-        for (const question of questions) {
-            const qResponse = await postCreateNewQuestionForQuiz(+selectedQuiz.value, question.description, question.imageFile);
-            if (qResponse && qResponse.EC === 0 && qResponse.DT) {
-                for (const answer of question.answers) {
-                    await postCreateNewAnswerForQuestion(qResponse.DT.id, answer.description, answer.isCorrect);
-                }
+        for (let i in questionClone) {
+            let q = questionClone[i];
+            if (q.imageFile) {
+                q.imageFile = await toBase64(q.imageFile);
             }
         }
+        let res = await postUpsertQA({
+            quizId: selectedQuiz.value,
+            questions: questionClone
+        });
 
-        toast.success("Created question and answers successully!!");
-        setQuestions(initQuestion);
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+            fetchQuizWithQA();
+        } else {
+            toast.error(res.EM);
+        }
     }
+
+    const toBase64 = (file) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
 
     const handlePreviewImage = (questionData) => {
         setDataPreviewImage({
             url: URL.createObjectURL(questionData.imageFile),
             title: questionData.imageName
         });
-        setIsPreviewImage(true)
+        setIsPreviewImage(true);
     }
-
-    // console.log('selected quiz id,' + selectedQuiz.value)
 
     return (
         <div className="questions-container">
