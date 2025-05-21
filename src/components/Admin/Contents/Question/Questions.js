@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import Lightbox from "react-awesome-lightbox";
+import { getAllQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion } from '../../../../services/ApiServices';
 import { v4 as uuidv4 } from 'uuid';
 import { PiPlusCircleFill } from "react-icons/pi";
 import { PiMinusCircleFill } from "react-icons/pi";
@@ -11,13 +12,6 @@ import _ from 'lodash';
 import './Questions.scss';
 
 const Questions = () => {
-    const options = [
-        { value: 'EASY', label: 'EASY' },
-        { value: 'MEDIUM', label: 'MEDIUM' },
-        { value: 'HOT', label: 'HOT' },
-    ];
-    const [selectedQuiz, setSelectedQuiz] = useState({});
-
     const [questions, setQuestions] = useState([
         {
             id: uuidv4(),
@@ -39,6 +33,26 @@ const Questions = () => {
         title: '',
         url: ''
     });
+
+    const [selectedQuiz, setSelectedQuiz] = useState('');
+    const [listQuiz, setListQuiz] = useState([]);
+    useEffect(() => {
+        fetchQuiz();
+    }, []);
+
+    const fetchQuiz = async () => {
+        const res = await getAllQuizForAdmin();
+        if (res && res.EC === 0 && res.DT) {
+            let listQuizRes = res.DT.map(item => {
+                return {
+                    value: item.id,
+                    label: item.id + ' - ' + item.description,
+                }
+            })
+            setListQuiz(listQuizRes);
+        }
+    }
+
 
     const handleAddOrRemoveQuestion = (type, id) => {
         if (type === 'ADD') {
@@ -133,8 +147,19 @@ const Questions = () => {
         }
     }
 
-    const handleSubmitQuestions = () => {
-        console.log('questions: ', questions)
+    const handleSubmitQuestions = async () => {
+        console.log('questions: ', questions);
+        //Validate data - todo
+
+        await Promise.all(questions.map(async (question) => {
+            //Call to create new question - postCreateNewQuestionForQuiz
+            const qRes = await postCreateNewQuestionForQuiz(+selectedQuiz.value, question.description, question.imageFile);
+
+            //Call to create new answer - postCreateNewAnswerForQuestion
+            await Promise.all(question.answers.map(async (answer) => {
+                await postCreateNewAnswerForQuestion(qRes.DT.id, answer.description, answer.isCorrect);
+            }))
+        }))
     }
 
     const handlePreviewImage = (questionData) => {
@@ -145,6 +170,8 @@ const Questions = () => {
         setIsPreviewImage(true)
     }
 
+    // console.log('selected quiz id,' + selectedQuiz.value)
+
     return (
         <div className="questions-container">
             <div className="title">Manage Questions</div>
@@ -154,8 +181,8 @@ const Questions = () => {
                     <label className='mb-2'>Select Quiz</label>
                     <Select
                         defaultValue={selectedQuiz}
-                        onChange={selectedQuiz}
-                        options={options}
+                        onChange={setSelectedQuiz}
+                        options={listQuiz}
                         placeholder="Quiz Type"
                     />
                 </div>
@@ -222,15 +249,17 @@ const Questions = () => {
                                             )
                                         })
                                     }
-                                    {
-                                        question.answers && question.answers.length > 0 &&
-                                        <div className='mt-3'>
-                                            <button onClick={() => handleSubmitQuestions()} className='btn btn-warning'>Save Questions</button>
-                                        </div>
-                                    }
                                 </>
                             )
                         })}
+                </div>
+                <div className='mt-3 mb-2'>
+                    {
+                        questions && questions.length > 0 &&
+                        <div className='mt-3'>
+                            <button onClick={() => handleSubmitQuestions()} className='btn btn-warning'>Save Questions</button>
+                        </div>
+                    }
                 </div>
             </div>
             {isPreviewImage === true &&
