@@ -9,10 +9,10 @@ import { TbHexagonPlusFilled } from "react-icons/tb";
 import { TbHexagonMinusFilled } from "react-icons/tb";
 import { LuImageUp } from "react-icons/lu";
 import _ from 'lodash';
-import './Questions.scss';
+import './QuizQA.scss';
 import { toast } from 'react-toastify';
 
-const Questions = () => {
+const QuizQA = (props) => {
     const initQuestion = [
         {
             id: uuidv4(),
@@ -193,8 +193,6 @@ const Questions = () => {
 
     return (
         <div className="questions-container">
-            <div className="title">Manage Questions</div>
-            <hr />
             <div className="add-new-question">
                 <div className='col-6 form-group'>
                     <label className='mb-2'>Select Quiz</label>
@@ -292,4 +290,4 @@ const Questions = () => {
     )
 }
 
-export default Questions;
+export default QuizQA;
