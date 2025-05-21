@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import Lightbox from "react-awesome-lightbox";
-import { getAllQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion } from '../../../../services/ApiServices';
+import {
+    getAllQuizForAdmin,
+    postCreateNewQuestionForQuiz,
+    postCreateNewAnswerForQuestion,
+    getQuizWithQA
+} from '../../../../services/ApiServices';
 import { v4 as uuidv4 } from 'uuid';
 import { PiPlusCircleFill } from "react-icons/pi";
 import { PiMinusCircleFill } from "react-icons/pi";
@@ -38,9 +43,16 @@ const QuizQA = (props) => {
 
     const [selectedQuiz, setSelectedQuiz] = useState('');
     const [listQuiz, setListQuiz] = useState([]);
+
     useEffect(() => {
         fetchQuiz();
     }, []);
+
+    useEffect(() => {
+        if (selectedQuiz && selectedQuiz.value) {
+            fetchQuizWithQA();
+        }
+    }, [selectedQuiz]);
 
     const fetchQuiz = async () => {
         const res = await getAllQuizForAdmin();
@@ -53,6 +65,34 @@ const QuizQA = (props) => {
             })
             setListQuiz(listQuizRes);
         }
+    }
+
+    const fetchQuizWithQA = async () => {
+        const res = await getQuizWithQA(selectedQuiz.value);
+        if (res && res.EC === 0 && res.DT) {
+            let newQA = [];
+            for (var i in res.DT.qa) {
+                let q = res.DT.qa[i];
+                if (q.imageFile) {
+                    q.imageName = `question-${q.id}.png`
+                    q.imageFile = dataURLtoFile(`data:image/png;base64,${q.imageFile}`, q.imageName);
+                }
+                newQA.push(q);
+            }
+            setQuestions(newQA);
+        }
+    }
+
+    const dataURLtoFile = (dataurl, filename) => {
+        let arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[arr.length - 1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
     }
 
 

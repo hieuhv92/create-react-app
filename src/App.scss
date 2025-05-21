@@ -44,4 +44,10 @@ body {
       }
     }
   }
+
+  .main-container {
+    .app-content {
+      height: calc(100vh - 50px);
+    }
+  }
 }
