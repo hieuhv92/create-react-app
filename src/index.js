@@ -5,6 +5,8 @@ import { store, persistor } from './redux/store';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import { PersistGate } from 'redux-persist/integration/react';
+// import i18n (needs to be bundled ;))
+import './utils/i18n';
 import 'nprogress/nprogress.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
