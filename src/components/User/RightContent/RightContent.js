@@ -14,7 +14,7 @@ const RightContent = (props) => {
         if (isAnswered) {
             return 'question selected';
         }
-        console.log(isAnswered)
+
         return 'question';
     }
 
