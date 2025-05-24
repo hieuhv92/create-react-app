@@ -6,9 +6,25 @@
         padding: 0 10px;
 
         .admin-header {
-            height: 40px;
-            border: 1px solid green;
+            height: 60px;
+            border-bottom: 1px solid #cccccc;
             cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px 0 10px;
+
+            .left-side {
+                cursor: pointer;
+                font-size: 25px;
+                color: #666666;
+            }
+
+            .right-side {
+                display: flex;
+                gap: 20px;
+
+            }
         }
 
         .admin-main {
