@@ -231,6 +231,7 @@ const QuizQA = (props) => {
                         onChange={setSelectedQuiz}
                         options={listQuiz}
                         placeholder="Quiz Type"
+                        className="select-quiz"
                     />
                 </div>
                 <div className='mt-3 mb-2'>Add questions:</div>

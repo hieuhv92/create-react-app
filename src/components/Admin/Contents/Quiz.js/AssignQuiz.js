@@ -52,7 +52,7 @@ const AssignQuiz = () => {
 
     return (
         <div className="assign-quiz-container row">
-            <div className='col-6 form-group'>
+            <div className='col-6 form-group mt-3'>
                 <label className='mb-2'>Select Quiz</label>
                 <Select
                     defaultValue={selectedQuiz}
@@ -61,8 +61,8 @@ const AssignQuiz = () => {
                     placeholder="Quiz Type"
                 />
             </div>
-            <div className='col-6 form-group'>
-                <label className='mb-2'>Select Quiz</label>
+            <div className='col-6 form-group mt-3'>
+                <label className='mb-2'>Select User</label>
                 <Select
                     defaultValue={selectedUser}
                     onChange={setSelectedUser}
