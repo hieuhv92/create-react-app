@@ -32,6 +32,13 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
+    //In case the access_token was expired
+    if (error.reponse && error.reponse.data && error.reponse.data.EC === -999) {
+        window.location.href = '/login';
+    }
+
+
     return error && error.reponse && error.reponse.data ? error.reponse.data : Promise.reject(error);
 });
 
