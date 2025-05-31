@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
-// import './ManageUser.scss';
 import { toast } from 'react-toastify';
 import { postUpdatePassword } from '../../services/ApiServices';
 
@@ -46,7 +45,6 @@ const Password = (props) => {
             toast.error(res.EM)
         }
     }
-
 
     return (
         <>

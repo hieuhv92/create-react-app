@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, Tab, Tabs, Button } from 'react-bootstrap';
-// import './ManageUser.scss';
-import { FcPlus } from "react-icons/fc";
+import { Modal, Tab, Tabs } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { postUpdateProfile } from '../../services/ApiServices';
 import _ from "lodash";

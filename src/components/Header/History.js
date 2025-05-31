@@ -1,9 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { getQuizHistoryData } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import Moment from 'react-moment';
-
 
 const History = (props) => {
     const [listQuizHistory, setListQuizHistory] = useState([]);
@@ -16,7 +14,6 @@ const History = (props) => {
         const res = await getQuizHistoryData();
         if (res && res.EC === 0) {
             setListQuizHistory(res.DT.data)
-            toast.success(res.EM);
         }
         if (res && res.EC !== 0) {
             toast.error(res.EM);
