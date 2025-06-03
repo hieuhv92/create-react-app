@@ -5,6 +5,7 @@ import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { MdDashboard } from "react-icons/md";
 import { PiListDashesFill } from "react-icons/pi";
 import { Link } from 'react-router-dom';
+import { IoHomeSharp } from "react-icons/io5";
 
 const SideBar = (props) => {
 
@@ -29,8 +30,10 @@ const SideBar = (props) => {
                                     };
                             },
                         }}
+
                     ></Menu>
                     <Menu>
+                        <MenuItem icon={<IoHomeSharp />} component={<Link to="/" />}> Homepage </MenuItem>
                         <MenuItem icon={<MdDashboard />} component={<Link to="/admin" />}> Dashboard </MenuItem>
                         <SubMenu label="Features" icon={<PiListDashesFill />}>
                             <MenuItem component={<Link to="/admin/manage-users" />}> Manage Users</MenuItem>
