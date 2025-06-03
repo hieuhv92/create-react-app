@@ -56,7 +56,7 @@ const Questions = () => {
     }
 
 
-    const handleAddOrRemoveQuestion = (type, id) => {
+    const handleQuestionActions = (type, id) => {
         if (type === 'ADD') {
             const newQuestion = {
                 id: uuidv4(),
@@ -81,7 +81,7 @@ const Questions = () => {
         }
     }
 
-    const handleAddOrRemoveAnswer = (type, qId, aId) => {
+    const handleAnswerActions = (type, qId, aId) => {
         let questionsClone = _.cloneDeep(questions);
         let index = questionsClone.findIndex(item => item.id === qId);
         if (index < 0) { return; }
@@ -110,7 +110,7 @@ const Questions = () => {
         }
     }
 
-    const handleOnChangeFileQuestion = (qId, event) => {
+    const handleOnChangeImageFile = (qId, event) => {
         let questionsClone = _.cloneDeep(questions);
         let index = questionsClone.findIndex(item => item.id === qId);
         if (index > -1 && event.target && event.target.files && event.target.files[0]) {
@@ -200,6 +200,7 @@ const Questions = () => {
                         onChange={setSelectedQuiz}
                         options={listQuiz}
                         placeholder="Quiz Type"
+                        className="select-quiz"
                     />
                 </div>
                 <div className='mt-3 mb-2'>Add questions:</div>
@@ -224,14 +225,14 @@ const Questions = () => {
                                                 id={`${question.id}`}
                                                 type='file'
                                                 hidden
-                                                onChange={(event) => handleOnChangeFileQuestion(question.id, event)}
+                                                onChange={(event) => handleOnChangeImageFile(question.id, event)}
                                             />
                                             <span>{question.imageFile ? <span className="preview-image" onClick={() => handlePreviewImage(question)}>{question.imageName}</span> : 'No file is uploaded!!'}</span>
                                         </div>
                                         <div className="btn-add-question-group">
-                                            <span className="icon-add" onClick={() => handleAddOrRemoveQuestion('ADD', '')}><PiPlusCircleFill /></span>
+                                            <span className="icon-add" onClick={() => handleQuestionActions('ADD', '')}><PiPlusCircleFill /></span>
                                             {questions.length > 1 &&
-                                                <span className="icon-remove" onClick={() => handleAddOrRemoveQuestion('REMOVE', question.id)}><PiMinusCircleFill /></span>
+                                                <span className="icon-remove" onClick={() => handleQuestionActions('REMOVE', question.id)}><PiMinusCircleFill /></span>
                                             }
                                         </div>
                                     </div >
@@ -256,9 +257,9 @@ const Questions = () => {
                                                         <label>Answer {index + 1}</label>
                                                     </div>
                                                     <div className="btn-add-answer-group">
-                                                        <span className="icon-add" onClick={() => handleAddOrRemoveAnswer('ADD', question.id, '')}><TbHexagonPlusFilled /></span>
+                                                        <span className="icon-add" onClick={() => handleAnswerActions('ADD', question.id, '')}><TbHexagonPlusFilled /></span>
                                                         {question.answers.length > 1 &&
-                                                            <span className="icon-remove" onClick={() => handleAddOrRemoveAnswer('REMOVE', question.id, answer.id)}><TbHexagonMinusFilled /></span>
+                                                            <span className="icon-remove" onClick={() => handleAnswerActions('REMOVE', question.id, answer.id)}><TbHexagonMinusFilled /></span>
                                                         }
                                                     </div>
                                                 </div>

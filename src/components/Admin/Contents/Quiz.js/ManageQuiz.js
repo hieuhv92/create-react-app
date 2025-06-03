@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import './ManageQuiz.scss';
-import Select from 'react-select';
-import { postCreatNewQuiz } from '../../../../services/ApiServices';
+import { useState, useEffect } from 'react';
+import { postCreatNewQuiz, getAllQuizForAdmin } from '../../../../services/ApiServices';
 import { toast } from 'react-toastify';
-import TableQuiz from './TableQuiz';
 import { Tab, Tabs } from "react-bootstrap";
+import Select from 'react-select';
+import TableQuiz from './TableQuiz';
 import QuizQA from './QuizQA';
 import AssignQuiz from './AssignQuiz';
+import './ManageQuiz.scss';
 
 const ManageQuiz = (props) => {
     const options = [
@@ -19,10 +19,21 @@ const ManageQuiz = (props) => {
     const [description, setDescription] = useState();
     const [type, setType] = useState('EASY');
     const [image, setImage] = useState();
+    const [listQuiz, setListQuiz] = useState([]);
+
+    useEffect(() => {
+        fetchQuiz();
+    }, []);
+
+    const fetchQuiz = async () => {
+        const res = await getAllQuizForAdmin();
+        if (res && res.EC === 0) {
+            setListQuiz(res.DT);
+        }
+    }
 
     const handleChangeFile = (event) => {
         if (event.target && event.target.files && event.target.files[0]) {
-            // setPreviewImage(URL.createObjectURL(event.target.files[0]));
             setImage(event.target.files[0]);
         }
     }
@@ -42,6 +53,7 @@ const ManageQuiz = (props) => {
             setName('');
             setDescription('');
             setImage('');
+            fetchQuiz();
         } else {
             toast.error(response.EM);
         }
@@ -98,7 +110,7 @@ const ManageQuiz = (props) => {
                     </div>
                     <hr />
                     <div className="list-detail">
-                        <TableQuiz />
+                        <TableQuiz listQuiz={listQuiz} fetchQuiz={fetchQuiz} />
                     </div>
                 </Tab>
                 <Tab eventKey="updateQA" title="Update Q/A Quizzes">

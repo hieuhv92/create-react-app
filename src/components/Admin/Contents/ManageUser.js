@@ -59,7 +59,10 @@ const ManageUser = (props) => {
             <div className="title">Manage User</div>
             <div className="user-content">
                 <div className="btn-add-new">
-                    <button className="btn btn-primary" onClick={() => setShowCreateUserModal(true)}><FcPlus />Add new user</button>
+                    <button className="btn btn-primary" onClick={() => setShowCreateUserModal(true)}>
+                        <FcPlus />
+                        <span>Add new user</span>
+                    </button>
                 </div>
                 <div className="table-users-container">
                     {/* <TableUser

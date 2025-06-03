@@ -8,6 +8,13 @@
 
     .btn-add-new {
         margin: 15px 0px;
+
+        .btn-primary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
     }
 }
 

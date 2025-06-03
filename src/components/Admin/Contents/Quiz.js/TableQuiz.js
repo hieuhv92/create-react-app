@@ -3,25 +3,17 @@ import { getAllQuizForAdmin } from '../../../../services/ApiServices';
 import ModalDeleteQuiz from "./ModalDeleteQuiz";
 import ModalUpdateQuiz from "./ModalUpdateQuiz";
 
-const TableQuiz = () => {
-    const [listQuiz, setListQuiz] = useState([]);
+const TableQuiz = (props) => {
+    // const [listQuiz, setListQuiz] = useState([]);
+    const { listQuiz, fetchQuiz } = props;
+
+    console.log('listQuiz: ', listQuiz)
 
     const [isShowModalDeleteQuiz, setShowModalDeleteQuiz] = useState(false);
     const [dataDeleteQuiz, setDataDeleteQuiz] = useState({});
 
     const [isShowModalUpdateQuiz, setShowModalUpdateQuiz] = useState(false);
     const [dataUpdateQuiz, setDataUpdateQuiz] = useState({});
-
-    useEffect(() => {
-        fetchQuiz();
-    }, []);
-
-    const fetchQuiz = async () => {
-        const res = await getAllQuizForAdmin();
-        if (res && res.EC === 0) {
-            setListQuiz(res.DT);
-        }
-    }
 
     const handleDeleteQuiz = (item) => {
         setShowModalDeleteQuiz(true);
