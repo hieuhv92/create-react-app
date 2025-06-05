@@ -61,8 +61,8 @@ const ManageQuiz = (props) => {
 
     return (
         <div className="quiz-container">
-            <Tabs defaultActiveKey="updateQA" id="uncontrolled-tab-example">
-                <Tab eventKey="quizInfor" title="Manage Quiz">
+            <Tabs defaultActiveKey="manageQuiz" id="uncontrolled-tab-example">
+                <Tab eventKey="manageQuiz" title="Manage Quiz">
                     <div className="add-new mb-3">
                         <fieldset className="border rounded-3 p-3">
                             <legend className="float-none w-auto px-3">Add New Quiz:</legend>
@@ -116,7 +116,7 @@ const ManageQuiz = (props) => {
                 <Tab eventKey="updateQA" title="Update Q/A Quizzes">
                     <QuizQA />
                 </Tab>
-                <Tab eventKey="assignQAtoUser" title="Assign Quiz to User">
+                <Tab eventKey="assignQAtoUser" title="Assign Quiz To User">
                     <AssignQuiz />
                 </Tab>
             </Tabs>

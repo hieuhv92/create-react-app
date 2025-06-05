@@ -17,7 +17,7 @@ const SideBar = (props) => {
                     collapsedWidth="60px"
                     transitionDuration={1000}
                     // image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
-                    backgroundColor="#bcf3ff"
+                    backgroundColor="#485cc7"
                 >
                     <Menu
                         menuItemStyles={{
